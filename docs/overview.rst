@@ -167,25 +167,18 @@ our own stack using the experience we gained from building Firefox Sync.
 What follows is a comparison table showing how Kinto stacks up compared to some
 other projects in this space.
 
+========================  ===========  ============  ==========  ==========  ==========  ========  =======  ==========  ===========  ==============  ===============  =============  =============  ==========
+Project                   Open source  Fine-grained  Easy query  Conflict    Validation  Revision  File     Batch/bulk  Changes      Pluggable       Pluggable        Self-hostable  Decentralised  Language
+                                       permissions   mechanism   resolution              history   storage  operations  live stream  authentication  storage / cache                 discovery
+------------------------  -----------  ------------  ----------  ----------  ----------  --------  -------  ----------  -----------  --------------  ---------------  -------------  -------------  ----------
+**Kinto**                  x            x             x           x           x                     [#]_     x           x            x               x                x              [#]_           Python/JS
+Parse                                   x             x           x           x                     x        x           x
+Firebase                                x             x           x           x                                          x
+CouchDB/PouchDB (Hoodie)   x                          [#]_        x           x           x         x        x           x            x               x                x                             Erlang/JS
+Remote-Storage             x                          [#]_        x [#]_                            x                                 [#]_            x                x              x              [#]_
+BrowserFS                  x                                                                        x                                 x                                x                             Node.js
+========================  ===========  ============  ==========  ==========  ==========  ========  =======  ==========  ===========  ==============  ===============  =============  =============  ==========
 
-===========================  ======  ======  ========  =======  ==============  =======  =========
-Project                      Kinto   Parse   Firebase  CouchDB  Remote-Storage  Hoodie   BrowserFS
----------------------------  ------  ------  --------  -------  --------------  -------  ---------
-Fine-grained permissions     ✔       ✔       ✔                                  [#]_
-Easy query mechanism         ✔       ✔       ✔         [#]_     [#]_            ✔
-Conflict resolution          ✔       ✔       ✔         ✔        ✔ [#]_          ✔
-Validation                   ✔       ✔       ✔         ✔                        ✔
-Revision history                                       ✔                        ✔
-File storage                         ✔                 ✔        ✔               ✔        ✔
-Batch/bulk operations        ✔       ✔                 ✔                        ✔
-Changes stream               [#]_    ✔       ✔         ✔                        ✔
-Pluggable authentication     ✔                         ✔        [#]_            ✔        ✔
-Pluggable storage / cache    ✔                                  ✔              
-Self-hostable                ✔                         ✔        ✔               ✔        ✔
-Decentralised discovery      [#]_                               ✔               
-Open source                  ✔                         ✔        ✔               ✔        ✔
-Language                     Python                    Erlang   Node.js [#]_    Node.js  Node.js
-===========================  ======  ======  ========  =======  ==============  =======  =========
 
 .. [#] Currently, user plugin in Hoodie auto-approves users, but they are working on it.
 .. [#] CouchDB uses Map/Reduce as a query mechanism, which isn't easy to
