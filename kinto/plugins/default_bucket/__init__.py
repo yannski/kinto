@@ -6,7 +6,8 @@ from pyramid.settings import asbool
 from pyramid.security import NO_PERMISSION_REQUIRED
 
 from cliquet.errors import raise_invalid
-from cliquet.utils import build_request, reapply_cors, hmac_digest
+from cliquet.utils import (build_request, reapply_cors, hmac_digest,
+                           current_service)
 from cliquet.storage import exceptions as storage_exceptions
 
 from kinto.authorization import RouteFactory
@@ -120,6 +121,14 @@ def default_bucket(request):
     try:
         response = request.invoke_subrequest(subrequest)
     except httpexceptions.HTTPException as error:
+        # Tie default bucket view with underlying Cliquet service.
+        # This helps Cliquet to detect the default bucket requests as if
+        # they were issued on the underlying resource.
+        # (ref #mozilla-services/cliquet#631)
+        pattern = request.matched_route.pattern
+        service = current_service(subrequest)
+        request.registry.cornice_services[pattern] = service
+
         if error.content_type == 'application/json':
             response = reapply_cors(subrequest, error)
         else:
